@@ -2,14 +2,18 @@ import React, { useRef, useEffect } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ChevronDown } from 'lucide-react';
 import { Commit } from '../../api/types';
+import { CommitRowLayout } from './layout/laneLayout';
 import { CommitRow } from './CommitRow';
 import { Button } from '../ui/Button';
 import './CommitList.css';
 
 interface CommitListProps {
   commits: Commit[];
+  layouts: Map<string, CommitRowLayout>;
   selectedCommit: Commit | null;
   onSelectCommit: (commit: Commit) => void;
+  filtersActive: boolean;
+  gutterWidth: number;
   nextCursor: string | null;
   onLoadMore?: () => void;
   isLoadingMore?: boolean;
@@ -17,8 +21,11 @@ interface CommitListProps {
 
 export const CommitList: React.FC<CommitListProps> = ({
   commits,
+  layouts,
   selectedCommit,
   onSelectCommit,
+  filtersActive,
+  gutterWidth,
   nextCursor,
   onLoadMore,
   isLoadingMore = false,
@@ -64,9 +71,14 @@ export const CommitList: React.FC<CommitListProps> = ({
 
   return (
     <div className="commit-list-container" onKeyDown={handleKeyDown}>
-      {/* Column Headers */}
+      {/* Column Headers with Dynamic Gutter Width */}
       <div className="commit-list-header" aria-hidden="true">
-        <div className="commit-list-header-gutter">Graph</div>
+        <div
+          className="commit-list-header-gutter"
+          style={{ width: `${gutterWidth}px`, minWidth: `${gutterWidth}px` }}
+        >
+          Graph
+        </div>
         <div className="commit-list-header-content">
           <span className="commit-list-header-sha">SHA</span>
           <span className="commit-list-header-msg">Message</span>
@@ -91,6 +103,7 @@ export const CommitList: React.FC<CommitListProps> = ({
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const commit = commits[virtualRow.index];
             const isSelected = selectedCommit?.sha === commit.sha;
+            const layout = layouts.get(commit.sha);
 
             return (
               <div
@@ -103,7 +116,10 @@ export const CommitList: React.FC<CommitListProps> = ({
               >
                 <CommitRow
                   commit={commit}
+                  layout={layout}
                   isSelected={isSelected}
+                  filtersActive={filtersActive}
+                  gutterWidth={gutterWidth}
                   onSelect={onSelectCommit}
                 />
               </div>

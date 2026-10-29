@@ -6,6 +6,8 @@ import { Commit } from '../api/types';
 import { GraphToolbar, GraphFilterState } from '../components/graph/GraphToolbar';
 import { CommitList } from '../components/graph/CommitList';
 import { CommitDetails } from '../components/graph/CommitDetails';
+import { GraphLegend } from '../components/graph/GraphLegend';
+import { computeCommitGraphLayout } from '../components/graph/layout/laneLayout';
 import { LoadingSkeleton, EmptyState, ErrorState } from '../components/states';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
@@ -25,6 +27,21 @@ export const CommitGraph: React.FC = () => {
   const [mobileDetailsOpen, setMobileDetailsOpen] = useState(false);
 
   const rawCommits = useMemo(() => data?.commits || [], [data?.commits]);
+
+  // Compute graph layout ONCE for all loaded commits
+  const graphLayout = useMemo(() => {
+    return computeCommitGraphLayout(rawCommits);
+  }, [rawCommits]);
+
+  // Determine if any filter is active
+  const filtersActive = useMemo(() => {
+    return Boolean(
+      filters.searchQuery.trim() ||
+      filters.selectedAuthor !== 'all' ||
+      filters.selectedBranch !== 'all' ||
+      !filters.showMerges
+    );
+  }, [filters]);
 
   // Extract unique authors and branches for filter dropdowns
   const { authors, branches } = useMemo(() => {
@@ -145,6 +162,12 @@ export const CommitGraph: React.FC = () => {
           filteredCount={filteredCommits.length}
         />
 
+        {/* Legend and Filter Notice Banner */}
+        <GraphLegend
+          filtersActive={filtersActive}
+          onResetFilters={handleResetFilters}
+        />
+
         {/* States & Main Content */}
         {isLoading ? (
           <LoadingSkeleton rows={8} />
@@ -188,8 +211,11 @@ export const CommitGraph: React.FC = () => {
             <div className="commit-graph-list-col">
               <CommitList
                 commits={filteredCommits}
+                layouts={graphLayout.layouts}
                 selectedCommit={selectedCommit}
                 onSelectCommit={handleSelectCommit}
+                filtersActive={filtersActive}
+                gutterWidth={graphLayout.gutterWidth}
                 nextCursor={data?.next_cursor || null}
               />
             </div>

@@ -1,0 +1,58 @@
+/**
+ * CommitGutter Styles
+ * SVG container for the row's commit graph node, rails, and curves.
+ */
+
+.commit-gutter-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.graph-node {
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.commit-row:hover .graph-node {
+  filter: brightness(1.25);
+}
+
+.graph-node-selected-glow {
+  animation: nodePulse 2s infinite ease-in-out;
+}
+
+@keyframes nodePulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.graph-segment {
+  transition: stroke-width var(--transition-fast), opacity var(--transition-fast);
+}
+
+.graph-segment-highlighted {
+  stroke-width: 3px !important;
+  stroke: var(--color-accent) !important;
+  opacity: 0.9 !important;
+  filter: drop-shadow(0 0 3px var(--color-accent));
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .graph-node,
+  .graph-segment {
+    transition: none !important;
+    animation: none !important;
+  }
+  .graph-node-selected-glow {
+    animation: none !important;
+  }
+}

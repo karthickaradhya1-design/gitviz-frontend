@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { GitMerge, Check, Copy } from 'lucide-react';
 import { Commit } from '../../api/types';
+import { CommitRowLayout } from './layout/laneLayout';
+import { CommitGutter } from './CommitGutter';
 import { Badge } from '../ui/Badge';
 import './CommitRow.css';
 
 interface CommitRowProps {
   commit: Commit;
+  layout?: CommitRowLayout;
   isSelected: boolean;
+  filtersActive?: boolean;
+  gutterWidth: number;
   onSelect: (commit: Commit) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
@@ -19,7 +24,6 @@ function getAuthorAvatar(name: string): { initials: string; colorVar: string } {
       ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
       : name.slice(0, 2).toUpperCase();
 
-  // Consistent hash to select one of 8 lane colors
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = (hash << 5) - hash + name.charCodeAt(i);
@@ -31,7 +35,7 @@ function getAuthorAvatar(name: string): { initials: string; colorVar: string } {
 
 /** Format relative time */
 function formatRelativeDate(isoDate: string): string {
-  const now = new Date('2026-10-29T20:00:00Z').getTime(); // anchored to project timeline
+  const now = new Date('2026-10-29T20:00:00Z').getTime();
   const past = new Date(isoDate).getTime();
   const diffSec = Math.max(0, Math.floor((now - past) / 1000));
 
@@ -53,7 +57,10 @@ function formatRelativeDate(isoDate: string): string {
 
 export const CommitRow: React.FC<CommitRowProps> = ({
   commit,
+  layout,
   isSelected,
+  filtersActive = false,
+  gutterWidth,
   onSelect,
   onKeyDown,
 }) => {
@@ -75,6 +82,11 @@ export const CommitRow: React.FC<CommitRowProps> = ({
     }
   };
 
+  const laneLabel =
+    layout && !filtersActive
+      ? ` (Lane ${layout.lane + 1})`
+      : '';
+
   return (
     <div
       className={`commit-row ${isSelected ? 'is-selected' : ''}`}
@@ -89,14 +101,14 @@ export const CommitRow: React.FC<CommitRowProps> = ({
       tabIndex={0}
       role="row"
       aria-selected={isSelected}
-      aria-label={`Commit ${commit.short_sha}: ${commit.message} by ${commit.author.name}`}
+      aria-label={`Commit ${commit.short_sha}${laneLabel}: ${commit.message} by ${commit.author.name}`}
     >
-      {/* 1. Reserved Graph Gutter (120px) where lane drawing will happen later */}
-      <div
-        className="commit-gutter"
-        data-graph-gutter="true"
-        data-sha={commit.short_sha}
-        aria-hidden="true"
+      {/* 1. Gutter with SVG commit node, branch lines, and curves */}
+      <CommitGutter
+        layout={layout}
+        isSelected={isSelected}
+        filtersActive={filtersActive}
+        gutterWidth={gutterWidth}
       />
 
       {/* 2. Row Content */}
@@ -144,7 +156,10 @@ export const CommitRow: React.FC<CommitRowProps> = ({
         </div>
 
         {/* Author Avatar & Name */}
-        <div className="commit-author-group" title={`${commit.author.name} <${commit.author.email}>`}>
+        <div
+          className="commit-author-group"
+          title={`${commit.author.name} <${commit.author.email}>`}
+        >
           <div
             className="commit-author-avatar"
             style={{ backgroundColor: colorVar }}
