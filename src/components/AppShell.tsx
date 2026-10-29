@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from './Header';
+import { Footer } from './Footer';
 
 export const AppShell: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ export const AppShell: React.FC = () => {
       <main className="app-main" style={{ flex: '1 0 auto', width: '100%' }}>
         <Outlet />
       </main>
-      <footer className="app-footer"></footer>
+      <Footer />
     </div>
   );
 };

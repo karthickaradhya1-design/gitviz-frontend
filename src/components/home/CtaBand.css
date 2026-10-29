@@ -1,0 +1,184 @@
+/**
+ * CtaBand Component Styles
+ * Rounded gradient card with overlay pattern, radial glow, and accessible text.
+ */
+
+.cta-band-section {
+  position: relative;
+  width: 100%;
+  padding-top: 80px;
+  padding-bottom: 96px;
+}
+
+.cta-band-card {
+  position: relative;
+  border-radius: 24px;
+  padding: clamp(var(--space-8), 6vw, var(--space-16)) clamp(var(--space-6), 6vw, var(--space-12));
+  background: var(--gradient-primary);
+  color: #FFFFFF;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+[data-theme="dark"] .cta-band-card {
+  background: linear-gradient(135deg, #091A30 0%, #0D2038 50%, #16365C 100%);
+  border: 1px solid rgba(34, 199, 255, 0.35);
+  box-shadow: var(--shadow-lg), 0 0 32px rgba(34, 199, 255, 0.14);
+}
+
+/* Subtle Dot Grid Overlay */
+.cta-band-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.45;
+  z-index: 0;
+}
+
+[data-theme="dark"] .cta-band-pattern {
+  background-image: radial-gradient(rgba(34, 199, 255, 0.22) 1px, transparent 1px);
+  opacity: 0.35;
+}
+
+/* Radial Accent Glow */
+.cta-band-glow {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 174, 239, 0.35) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="dark"] .cta-band-glow {
+  background: radial-gradient(circle, rgba(34, 199, 255, 0.3) 0%, transparent 70%);
+  filter: blur(65px);
+}
+
+/* Inner Content */
+.cta-band-content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cta-band-title {
+  font-family: var(--font-sans);
+  font-size: clamp(1.85rem, 3.5vw + 0.5rem, 2.5rem);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-4);
+}
+
+.cta-band-text {
+  font-family: var(--font-sans);
+  font-size: clamp(var(--text-base), 1.5vw + 0.5rem, 1.125rem);
+  line-height: var(--leading-relaxed);
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--space-8);
+  max-width: 580px;
+}
+
+/* Action Buttons Container */
+.cta-band-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Button Overrides for Gradient Background Contrast */
+.cta-btn-primary {
+  background-color: #FFFFFF !important;
+  color: #002244 !important;
+  border-color: #FFFFFF !important;
+  font-weight: var(--font-bold) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
+}
+
+.cta-btn-primary:hover:not(:disabled) {
+  background-color: #F5F8FC !important;
+  color: #001830 !important;
+  border-color: #F5F8FC !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22) !important;
+}
+
+[data-theme="dark"] .cta-btn-primary {
+  background-color: var(--color-accent) !important;
+  color: #071426 !important;
+  border-color: var(--color-accent) !important;
+}
+
+[data-theme="dark"] .cta-btn-primary:hover:not(:disabled) {
+  background-color: #52D6FF !important;
+  border-color: #52D6FF !important;
+}
+
+.cta-btn-outline {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.cta-btn-outline:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  color: #FFFFFF !important;
+}
+
+/* Animation */
+.cta-band-animated {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-band-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 540px) {
+  .cta-band-section {
+    padding-top: 56px;
+    padding-bottom: 64px;
+  }
+
+  .cta-band-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta-band-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .cta-band-animated {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
