@@ -1,0 +1,269 @@
+/**
+ * Header Styles for GitViz
+ * Follows design system tokens: Navy + Cyan, 64px sticky bar, accessible contrast.
+ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 64px;
+  background-color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  transition: box-shadow var(--transition-normal), background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+[data-theme="dark"] .site-header {
+  background-color: rgba(7, 20, 38, 0.88);
+}
+
+.site-header.is-scrolled {
+  box-shadow: var(--shadow-md);
+}
+
+.header-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* Brand / Logo */
+.header-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--radius-sm);
+  transition: opacity var(--transition-fast);
+}
+
+.header-logo:hover {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.header-logo-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--gradient-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.header-logo-text {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* Desktop Navigation */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  list-style: none;
+}
+
+.header-nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.header-nav-link:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-hover);
+  text-decoration: none;
+}
+
+.header-nav-link.active {
+  color: var(--color-link);
+  background-color: var(--color-primary-soft);
+  border-bottom-color: var(--color-accent);
+  font-weight: var(--font-semibold);
+}
+
+[data-theme="dark"] .header-nav-link.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-accent);
+}
+
+/* Header Right Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Repository Status Chip */
+.repo-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.repo-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+/* Hamburger Toggle Button */
+.header-menu-toggle {
+  display: none;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  cursor: pointer;
+  color: var(--color-text-primary);
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.header-menu-toggle:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-accent);
+}
+
+/* Mobile Slide-down Panel (< 820px) */
+.mobile-nav-panel {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  z-index: 999;
+  animation: mobileSlideDown var(--transition-normal);
+}
+
+@keyframes mobileSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  background-color: var(--color-surface);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+  min-height: 44px;
+}
+
+.mobile-nav-link:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border);
+  text-decoration: none;
+}
+
+.mobile-nav-link.active {
+  color: var(--color-link);
+  background-color: var(--color-primary-soft);
+  border-left: 3px solid var(--color-accent);
+  font-weight: var(--font-semibold);
+}
+
+[data-theme="dark"] .mobile-nav-link.active {
+  color: var(--color-primary);
+}
+
+.mobile-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+  margin-top: var(--space-2);
+}
+
+/* Responsive Breakpoint (820px) */
+@media (max-width: 820px) {
+  .header-nav {
+    display: none;
+  }
+
+  .repo-status-chip {
+    display: none;
+  }
+
+  .header-menu-toggle {
+    display: inline-flex;
+  }
+
+  .header-container {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* Small Screens (< 360px) */
+@media (max-width: 360px) {
+  .header-logo-text {
+    font-size: var(--text-base);
+  }
+}
