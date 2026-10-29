@@ -1,0 +1,117 @@
+.not-found-view {
+  width: 100%;
+  min-height: calc(100vh - 64px - 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4) var(--space-16);
+  background-color: var(--color-bg);
+}
+
+.not-found-container {
+  max-width: 580px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+/* Decorative SVG Graphic */
+.not-found-graphic {
+  width: 240px;
+  height: 95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 404 Display */
+.not-found-number {
+  font-family: var(--font-mono);
+  font-size: 5rem;
+  font-weight: var(--font-bold);
+  line-height: var(--leading-none);
+  letter-spacing: -0.04em;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+}
+
+.not-found-title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+}
+
+.not-found-description {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+/* Requested Chip */
+.not-found-chip-wrapper {
+  margin: var(--space-1) 0;
+}
+
+.not-found-chip {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  max-width: 480px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Actions */
+.not-found-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* Footer Link */
+.not-found-footer-link {
+  margin-top: var(--space-2);
+}
+
+.not-found-ghost-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.not-found-ghost-link:hover {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+
+.not-found-ghost-link:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
