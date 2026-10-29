@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './components/ThemeProvider';
 import { AppShell } from './components/AppShell';
 
-import { HomeView } from './views/HomeView';
+import { Home } from './views/Home';
 import { GraphView } from './views/GraphView';
 import { FilesView } from './views/FilesView';
 import { DashboardView } from './views/DashboardView';
@@ -32,7 +32,7 @@ export function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<AppShell />}>
-              <Route index element={<HomeView />} />
+              <Route index element={<Home />} />
               <Route path="graph" element={<GraphView />} />
               <Route path="files" element={<FilesView />} />
               <Route path="dashboard" element={<DashboardView />} />
