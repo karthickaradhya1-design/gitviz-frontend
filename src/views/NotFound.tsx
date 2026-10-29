@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Compass, GitGraph, Home } from 'lucide-react';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { Button } from '../components/ui/Button';
 import './NotFound.css';
 
 export const NotFound: React.FC = () => {
+  usePageTitle('Not Found');
   const location = useLocation();
-
-  useEffect(() => {
-    document.title = 'Page not found | GitViz';
-  }, []);
 
   return (
     <div className="not-found-view">

@@ -247,3 +247,64 @@ code, pre, kbd, samp {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-muted);
 }
+
+/* Accessibility: Skip to Main Content Link */
+.skip-to-content-link {
+  position: absolute;
+  top: -120px;
+  left: var(--space-4);
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  z-index: 9999;
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  box-shadow: var(--shadow-lg);
+  transition: top var(--transition-fast);
+}
+
+.skip-to-content-link:focus {
+  top: var(--space-3);
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Accessibility: Minimum Touch Target Size (40x40px) on Coarse Pointer Devices */
+@media (pointer: coarse) {
+  button,
+  .btn,
+  .header-nav-link,
+  .mobile-nav-link,
+  .filter-chip,
+  .segment-btn,
+  .toc-link,
+  .theme-toggle-btn {
+    min-height: 40px;
+    min-width: 40px;
+  }
+}
+
+/* Print Stylesheet (Hides chrome, header, footer, and interactive controls) */
+@media print {
+  .site-header,
+  .site-footer,
+  .graph-toolbar,
+  .theme-toggle-btn,
+  .skip-to-content-link,
+  .mobile-picker-toggle-bar,
+  .about-sidebar,
+  .dashboard-export-wrapper {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .app-main {
+    padding: 0 !important;
+  }
+}

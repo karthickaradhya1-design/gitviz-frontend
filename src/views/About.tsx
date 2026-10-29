@@ -16,6 +16,7 @@ import {
   teamRoles,
   lastReviewedDate,
 } from '../content/about';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { resolveHashToLimitationId } from '../components/about/aboutUtils';
 import { TableOfContents, TocSection } from '../components/about/TableOfContents';
 import { LimitationList } from '../components/about/LimitationList';
@@ -34,13 +35,9 @@ const TOC_SECTIONS: TocSection[] = [
 ];
 
 export const About: React.FC = () => {
+  usePageTitle('About & Limitations');
   const location = useLocation();
   const [highlightLimitationId, setHighlightLimitationId] = useState<string | null>(null);
-
-  // Set document title
-  useEffect(() => {
-    document.title = 'About & Limitations | GitViz';
-  }, []);
 
   // Handle hash scrolling on page mount or URL hash change
   useEffect(() => {

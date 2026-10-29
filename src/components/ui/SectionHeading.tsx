@@ -8,6 +8,7 @@ export interface SectionHeadingProps {
   align?: 'center' | 'left';
   className?: string;
   id?: string;
+  as?: 'h1' | 'h2' | 'h3';
 }
 
 export const SectionHeading: React.FC<SectionHeadingProps> = ({
@@ -17,13 +18,16 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   align = 'center',
   className = '',
   id,
+  as = 'h2',
 }) => {
+  const HeadingTag = as;
+
   return (
     <div className={`section-heading section-heading-${align} ${className}`.trim()}>
       {eyebrow && <span className="section-eyebrow">{eyebrow}</span>}
-      <h2 id={id} className="section-title">
+      <HeadingTag id={id} className="section-title">
         {title}
-      </h2>
+      </HeadingTag>
       {subtitle && <p className="section-subtitle">{subtitle}</p>}
     </div>
   );

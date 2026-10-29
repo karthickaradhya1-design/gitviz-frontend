@@ -11,6 +11,7 @@ import {
   Users,
 } from 'lucide-react';
 import { useChurn, useBusFactor } from '../api/hooks';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { USE_MOCK, downloadExport } from '../api/client';
 import { formatActivePeriod } from '../components/dashboard/metricsUtils';
 import { StatCard } from '../components/dashboard/StatCard';
@@ -25,6 +26,7 @@ import { Badge } from '../components/ui/Badge';
 import './Dashboard.css';
 
 export const Dashboard: React.FC = () => {
+  usePageTitle('Health Dashboard');
   const {
     data: churn,
     isLoading: isChurnLoading,

@@ -27,12 +27,16 @@
   /* Semantic Colors */
   --color-success: #1FA971;
   --color-success-bg: rgba(31, 169, 113, 0.12);
+  --color-success-text: #166534;    /* Contrast > 5.5:1 against light background */
   --color-warning: #F5A623;
   --color-warning-bg: rgba(245, 166, 35, 0.12);
+  --color-warning-text: #92400E;    /* Contrast > 5.2:1 against light background */
   --color-danger: #E5484D;
   --color-danger-bg: rgba(229, 72, 77, 0.12);
+  --color-danger-text: #B91C1C;     /* Contrast > 5.8:1 against light background */
   --color-info: #00AEEF;
   --color-info-bg: rgba(0, 174, 239, 0.12);
+  --color-info-text: #004F9F;       /* Contrast > 7.1:1 against light background */
 
   /* Commit Graph Lane Colors (Colorblind-friendly 8 distinct tracks) */
   --lane-1: #1D70B8; /* Cobalt Blue */
@@ -130,12 +134,16 @@
   /* Semantic Colors */
   --color-success: #2ECC71;
   --color-success-bg: rgba(46, 204, 113, 0.16);
+  --color-success-text: #2ECC71;
   --color-warning: #F5A623;
   --color-warning-bg: rgba(245, 166, 35, 0.16);
+  --color-warning-text: #F5A623;
   --color-danger: #FF5A5F;
   --color-danger-bg: rgba(255, 90, 95, 0.16);
+  --color-danger-text: #FF5A5F;
   --color-info: #22C7FF;
   --color-info-bg: rgba(34, 199, 255, 0.16);
+  --color-info-text: #22C7FF;
 
   /* Commit Graph Lane Colors (Tuned for dark background readability) */
   --lane-1: #4DA3FF; /* Vivid Sky */

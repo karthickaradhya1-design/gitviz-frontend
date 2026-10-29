@@ -172,6 +172,27 @@
   margin: 0;
 }
 
+.footer-copyright-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.footer-mock-indicator {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-warning-text);
+  background-color: var(--color-warning-bg);
+  border: 1px solid rgba(245, 166, 35, 0.3);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+}
+
 .footer-bottom-actions {
   display: flex;
   align-items: center;

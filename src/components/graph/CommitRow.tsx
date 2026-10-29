@@ -55,7 +55,7 @@ function formatRelativeDate(isoDate: string): string {
   return `${months}mo ago`;
 }
 
-export const CommitRow: React.FC<CommitRowProps> = ({
+export const CommitRow: React.FC<CommitRowProps> = React.memo(({
   commit,
   layout,
   isSelected,
@@ -177,4 +177,4 @@ export const CommitRow: React.FC<CommitRowProps> = ({
       </div>
     </div>
   );
-};
+});

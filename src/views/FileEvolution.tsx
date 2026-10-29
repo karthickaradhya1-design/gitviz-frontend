@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FileSearch, Layers } from 'lucide-react';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { useFiles, useFileHistory } from '../api/hooks';
 import { FilePicker } from '../components/files/FilePicker';
 import { FileTimeline } from '../components/files/FileTimeline';
@@ -9,6 +10,7 @@ import { SectionHeading } from '../components/ui/SectionHeading';
 import './FileEvolution.css';
 
 export const FileEvolution: React.FC = () => {
+  usePageTitle('File Evolution');
   const [searchParams, setSearchParams] = useSearchParams();
   const urlPath = searchParams.get('path');
   const [mobilePickerOpen, setMobilePickerOpen] = useState(false);
@@ -69,6 +71,7 @@ export const FileEvolution: React.FC = () => {
         {/* Header Heading */}
         <div className="file-evolution-header">
           <SectionHeading
+            as="h1"
             eyebrow="File Evolution"
             title="Inspect how any file changed over time"
             subtitle="Explore unified diffs, rename history, and chronological commits. Lineage breaks are surfaced honestly when Git's rename heuristics lose track."

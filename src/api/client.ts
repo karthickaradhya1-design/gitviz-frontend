@@ -36,8 +36,8 @@ import mockFileHistorySimpleData from '../mock/file-history-simple.json';
 import mockMetricsChurnData from '../mock/metrics-churn.json';
 import mockMetricsBusFactorData from '../mock/metrics-bus-factor.json';
 
-export const USE_MOCK: boolean = true;
-export const API_BASE_URL: string = '/api/v1';
+export const USE_MOCK: boolean = import.meta.env.VITE_USE_MOCK !== 'false';
+export const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || '/api/v1';
 
 /** Helper to simulate network latency in mock mode */
 const simulateDelay = (ms: number = 400): Promise<void> =>

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Database, FilterX } from 'lucide-react';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { useCommits } from '../api/hooks';
 import { USE_MOCK } from '../api/client';
 import { Commit } from '../api/types';
@@ -21,6 +22,7 @@ const INITIAL_FILTERS: GraphFilterState = {
 };
 
 export const CommitGraph: React.FC = () => {
+  usePageTitle('Commit Graph');
   const { data, isLoading, error, refetch } = useCommits('default');
   const [filters, setFilters] = useState<GraphFilterState>(INITIAL_FILTERS);
   const [selectedCommit, setSelectedCommit] = useState<Commit | null>(null);

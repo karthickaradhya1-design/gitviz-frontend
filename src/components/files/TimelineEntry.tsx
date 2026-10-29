@@ -18,7 +18,7 @@ interface TimelineEntryProps {
   isLast?: boolean;
 }
 
-export const TimelineEntry: React.FC<TimelineEntryProps> = ({
+export const TimelineEntry: React.FC<TimelineEntryProps> = React.memo(({
   entry,
   isLast = false,
 }) => {
@@ -171,4 +171,4 @@ export const TimelineEntry: React.FC<TimelineEntryProps> = ({
       </div>
     </li>
   );
-};
+});

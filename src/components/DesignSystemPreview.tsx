@@ -125,9 +125,9 @@ export const DesignSystemPreview: React.FC = () => {
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-3)' }}>
           <ShieldCheck size={22} style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <h4 style={{ fontSize: 'var(--text-base)', marginBottom: 'var(--space-1)' }}>
+            <h3 style={{ fontSize: 'var(--text-base)', marginBottom: 'var(--space-1)' }}>
               Honest UI Principles Built-In
-            </h4>
+            </h3>
             <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
               No marketing hyperbole (&ldquo;blazing&rdquo;, &ldquo;first ever&rdquo;). Performance claims are grounded in measured data.
               Bus factor is clearly labeled as an estimate. High churn is highlighted as a review candidate, not an automated prediction of failure.
@@ -503,9 +503,9 @@ export const DesignSystemPreview: React.FC = () => {
               </span>
             </div>
 
-            <h4 style={{ fontSize: 'var(--text-base)', marginBottom: 'var(--space-2)' }}>
+            <h3 style={{ fontSize: 'var(--text-base)', marginBottom: 'var(--space-2)' }}>
               Refactor API client to single choke point
-            </h4>
+            </h3>
             <p style={{ fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)' }}>
               Ensures browser never contacts Git or database directly. Ready for mock-to-real flip.
             </p>
@@ -534,9 +534,9 @@ export const DesignSystemPreview: React.FC = () => {
               <span className="code-token">src/core/router.ts</span>
             </div>
 
-            <h4 style={{ fontSize: 'var(--text-base)', marginBottom: 'var(--space-2)' }}>
+            <h3 style={{ fontSize: 'var(--text-base)', marginBottom: 'var(--space-2)' }}>
               High Churn Candidate
-            </h4>
+            </h3>
             <p style={{ fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)' }}>
               42 commits across last 90 days. Churn indicates frequent modification, not an automated prediction of bugs.
             </p>

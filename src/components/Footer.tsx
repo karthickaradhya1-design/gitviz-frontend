@@ -9,6 +9,7 @@ import {
   ArrowUp,
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { USE_MOCK } from '../api/client';
 import './Footer.css';
 
 export const Footer: React.FC = () => {
@@ -127,9 +128,16 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="footer-bottom-bar">
-          <p className="footer-copyright">
-            &copy; 2026 GitViz. Built as a college project.
-          </p>
+          <div className="footer-copyright-group">
+            <p className="footer-copyright">
+              &copy; 2026 GitViz. Built as a college project.
+            </p>
+            {USE_MOCK && (
+              <span className="footer-mock-indicator" title="Application is currently reading mock JSON data">
+                Mock data
+              </span>
+            )}
+          </div>
 
           <div className="footer-bottom-actions">
             <ThemeToggle variant="icon" />
