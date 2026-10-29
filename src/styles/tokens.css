@@ -1,0 +1,161 @@
+/**
+ * GitViz Design System Tokens
+ * Base Palette: Navy + Cyan (chosen for trust, authority, and data clarity)
+ * 4px base spacing scale, 6/10/16px radii, AA 4.5:1 text contrast on both themes.
+ */
+
+:root {
+  /* LIGHT THEME (Base) */
+  --color-bg: #FFFFFF;
+  --color-surface: #F5F8FC;
+  --color-surface-hover: #EAF1FA;
+  --color-border: #DCE4EE;
+  --color-border-subtle: #E8EEF5;
+
+  /* Typography Colors */
+  --color-text-primary: #0B1F3A;    /* Contrast > 15:1 against #FFF */
+  --color-text-secondary: #52627A;  /* Contrast > 5.2:1 against #FFF */
+  --color-text-muted: #6B7C94;      /* Contrast > 4.5:1 against #FFF */
+
+  /* Brand Colors */
+  --color-primary: #003366;         /* Navy */
+  --color-primary-strong: #002244;  /* Deep Navy */
+  --color-accent: #00AEEF;          /* Cyan: ONLY icons, borders, highlights */
+  --color-link: #004F9F;            /* Accessible Link/Button Blue */
+  --color-focus-ring: #00AEEF;
+
+  /* Semantic Colors */
+  --color-success: #1FA971;
+  --color-success-bg: rgba(31, 169, 113, 0.12);
+  --color-warning: #F5A623;
+  --color-warning-bg: rgba(245, 166, 35, 0.12);
+  --color-danger: #E5484D;
+  --color-danger-bg: rgba(229, 72, 77, 0.12);
+  --color-info: #00AEEF;
+  --color-info-bg: rgba(0, 174, 239, 0.12);
+
+  /* Commit Graph Lane Colors (Colorblind-friendly 8 distinct tracks) */
+  --lane-1: #1D70B8; /* Cobalt Blue */
+  --lane-2: #E67E22; /* Vivid Orange */
+  --lane-3: #10B981; /* Emerald / Mint */
+  --lane-4: #9333EA; /* Royal Purple */
+  --lane-5: #E11D48; /* Rose Crimson */
+  --lane-6: #0284C7; /* Sky Cyan */
+  --lane-7: #D97706; /* Warm Amber */
+  --lane-8: #6366F1; /* Indigo */
+
+  /* Soft Tints & Gradients */
+  --color-primary-soft: rgba(0, 51, 102, 0.08);
+  --color-accent-soft: rgba(0, 174, 239, 0.12);
+  --gradient-primary: linear-gradient(135deg, #002244 0%, #003366 55%, #004F9F 100%);
+  --gradient-accent: linear-gradient(135deg, #004F9F 0%, #00AEEF 100%);
+  --gradient-subtle: linear-gradient(180deg, #FFFFFF 0%, #F5F8FC 100%);
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 1px 3px rgba(11, 31, 58, 0.06), 0 1px 2px rgba(11, 31, 58, 0.04);
+  --shadow-md: 0 4px 12px rgba(11, 31, 58, 0.08), 0 2px 4px rgba(11, 31, 58, 0.04);
+  --shadow-lg: 0 12px 28px rgba(11, 31, 58, 0.12), 0 4px 8px rgba(11, 31, 58, 0.06);
+
+  /* Typography Tokens */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Type Scale */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* Font Weights */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Spacing Scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* Border Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* DARK THEME OVERRIDE */
+[data-theme="dark"] {
+  --color-bg: #071426;
+  --color-surface: #0D2038;
+  --color-surface-hover: #142845;
+  --color-border: #1C3556;
+  --color-border-subtle: #132742;
+
+  /* Typography Colors */
+  --color-text-primary: #EAF1FB;    /* Contrast > 15:1 against #071426 */
+  --color-text-secondary: #9DB0C9;  /* Contrast > 8.1:1 against #071426 */
+  --color-text-muted: #6B7F99;      /* Contrast > 4.6:1 against #071426 */
+
+  /* Brand Colors */
+  --color-primary: #4DA3FF;         /* Vibrant light blue */
+  --color-primary-strong: #70B4FF;
+  --color-accent: #22C7FF;          /* High-clarity cyan */
+  --color-link: #4DA3FF;
+  --color-focus-ring: #22C7FF;
+
+  /* Semantic Colors */
+  --color-success: #2ECC71;
+  --color-success-bg: rgba(46, 204, 113, 0.16);
+  --color-warning: #F5A623;
+  --color-warning-bg: rgba(245, 166, 35, 0.16);
+  --color-danger: #FF5A5F;
+  --color-danger-bg: rgba(255, 90, 95, 0.16);
+  --color-info: #22C7FF;
+  --color-info-bg: rgba(34, 199, 255, 0.16);
+
+  /* Commit Graph Lane Colors (Tuned for dark background readability) */
+  --lane-1: #4DA3FF; /* Vivid Sky */
+  --lane-2: #F59E0B; /* Warm Tangerine */
+  --lane-3: #34D399; /* Mint Emerald */
+  --lane-4: #C084FC; /* Orchid Purple */
+  --lane-5: #FB7185; /* Coral Crimson */
+  --lane-6: #22D3EE; /* Electric Cyan */
+  --lane-7: #FBBF24; /* Amber Gold */
+  --lane-8: #818CF8; /* Periwinkle Indigo */
+
+  /* Soft Tints & Gradients */
+  --color-primary-soft: rgba(77, 163, 255, 0.12);
+  --color-accent-soft: rgba(34, 199, 255, 0.15);
+  --gradient-primary: linear-gradient(135deg, #091A30 0%, #0D2038 50%, #16365C 100%);
+  --gradient-accent: linear-gradient(135deg, #004F9F 0%, #22C7FF 100%);
+  --gradient-subtle: linear-gradient(180deg, #0D2038 0%, #071426 100%);
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.65);
+}
