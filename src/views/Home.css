@@ -1,7 +1,13 @@
 /**
- * Home View Container
- * Aligns precisely with Header container so logo and content line up on the left edge.
+ * Home View Layout
+ * Manages full-width section bands and standard page container alignment.
  */
+
+.home-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
 .home-page-container {
   max-width: 1280px;
