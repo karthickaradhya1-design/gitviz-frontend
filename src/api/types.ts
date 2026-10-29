@@ -85,3 +85,66 @@ export interface GetFileHistoryParams {
   repoId?: string;
   path: string;
 }
+
+export interface RepoSummary {
+  name: string;
+  commit_count: number;
+  author_count: number;
+  first_commit_at: string;
+  last_commit_at: string;
+}
+
+export interface TopFile {
+  path: string;
+  churn_commits: number;
+  churn_lines: number;
+  last_touch_at: string;
+}
+
+export interface AuthorStat {
+  name: string;
+  commits: number;
+  lines_added: number;
+}
+
+export interface ChurnPoint {
+  period: string; // e.g. "2026-01"
+  commits: number;
+  lines_changed: number;
+}
+
+export interface ChurnResponse {
+  repo: RepoSummary;
+  merge_commits_counted: boolean;
+  ignored_patterns: string[];
+  top_files: TopFile[];
+  commits_per_author: AuthorStat[];
+  churn_over_time: ChurnPoint[];
+}
+
+export interface ModuleBusFactor {
+  path: string;
+  bus_factor: number;
+  top_author: string;
+  top_author_share: number;
+}
+
+export interface BusFactorResponse {
+  score: number;
+  label: string;
+  top_contributor_share: number;
+  modules: ModuleBusFactor[];
+}
+
+export interface GetChurnParams {
+  repoId?: string;
+}
+
+export interface GetBusFactorParams {
+  repoId?: string;
+}
+
+export interface GetExportUrlParams {
+  repoId?: string;
+  format: 'json' | 'csv';
+}

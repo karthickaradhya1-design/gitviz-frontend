@@ -4,19 +4,30 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { getCommit, getCommits, getFileHistory, getFiles } from './client';
+import {
+  getCommit,
+  getCommits,
+  getFileHistory,
+  getFiles,
+  getChurn,
+  getBusFactor,
+} from './client';
 import {
   CommitDetail,
   CommitListResponse,
   GetCommitsParams,
   FileSummary,
   FileHistoryResponse,
+  ChurnResponse,
+  BusFactorResponse,
 } from './types';
 
 export const COMMITS_QUERY_KEY = 'commits';
 export const COMMIT_DETAIL_QUERY_KEY = 'commit-detail';
 export const FILES_QUERY_KEY = 'files';
 export const FILE_HISTORY_QUERY_KEY = 'file-history';
+export const CHURN_QUERY_KEY = 'metrics-churn';
+export const BUS_FACTOR_QUERY_KEY = 'metrics-bus-factor';
 
 /**
  * Fetch list of commits for a repository
@@ -79,6 +90,28 @@ export function useFileHistory(
       return getFileHistory({ repoId, path });
     },
     enabled: Boolean(path),
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * Fetch code churn metrics (top files, authors, time series)
+ */
+export function useChurn(repoId: string = 'default') {
+  return useQuery<ChurnResponse, Error>({
+    queryKey: [CHURN_QUERY_KEY, repoId],
+    queryFn: () => getChurn({ repoId }),
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * Fetch bus factor estimate metrics and module breakdowns
+ */
+export function useBusFactor(repoId: string = 'default') {
+  return useQuery<BusFactorResponse, Error>({
+    queryKey: [BUS_FACTOR_QUERY_KEY, repoId],
+    queryFn: () => getBusFactor({ repoId }),
     staleTime: 5 * 60 * 1000,
   });
 }

@@ -22,12 +22,19 @@ import {
   FileHistoryResponse,
   GetFilesParams,
   GetFileHistoryParams,
+  ChurnResponse,
+  BusFactorResponse,
+  GetChurnParams,
+  GetBusFactorParams,
+  GetExportUrlParams,
 } from './types';
 import mockCommitsData from '../mock/commits.json';
 import mockCommitDetailData from '../mock/commit-detail.json';
 import mockFilesData from '../mock/files.json';
 import mockFileHistoryData from '../mock/file-history.json';
 import mockFileHistorySimpleData from '../mock/file-history-simple.json';
+import mockMetricsChurnData from '../mock/metrics-churn.json';
+import mockMetricsBusFactorData from '../mock/metrics-bus-factor.json';
 
 export const USE_MOCK: boolean = true;
 export const API_BASE_URL: string = '/api/v1';
@@ -257,4 +264,166 @@ export async function getFileHistory({
     throw new Error(`Failed to fetch history for file ${path}: ${response.status} ${response.statusText}`);
   }
   return response.json();
+}
+
+/**
+ * Fetch code churn metrics (top files, authors, time series)
+ * GET /api/v1/repos/:id/metrics/churn
+ */
+export async function getChurn({
+  repoId = 'default',
+}: GetChurnParams = {}): Promise<ChurnResponse> {
+  if (USE_MOCK) {
+    const devState = getDevSimulatedState();
+    if (devState === 'loading') {
+      await simulateDelay(60000);
+    }
+    if (devState === 'error') {
+      await simulateDelay(300);
+      throw new Error('Simulated API error: failed to fetch repository churn metrics');
+    }
+    if (devState === 'empty') {
+      await simulateDelay(200);
+      return {
+        repo: {
+          name: 'empty-repo',
+          commit_count: 0,
+          author_count: 0,
+          first_commit_at: '',
+          last_commit_at: '',
+        },
+        merge_commits_counted: false,
+        ignored_patterns: [],
+        top_files: [],
+        commits_per_author: [],
+        churn_over_time: [],
+      };
+    }
+
+    await simulateDelay(400);
+    return mockMetricsChurnData as ChurnResponse;
+  }
+
+  const url = `${API_BASE_URL}/repos/${encodeURIComponent(repoId)}/metrics/churn`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch churn metrics: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+}
+
+/**
+ * Fetch bus factor score and module breakdowns
+ * GET /api/v1/repos/:id/metrics/bus-factor
+ */
+export async function getBusFactor({
+  repoId = 'default',
+}: GetBusFactorParams = {}): Promise<BusFactorResponse> {
+  if (USE_MOCK) {
+    const devState = getDevSimulatedState();
+    if (devState === 'loading') {
+      await simulateDelay(60000);
+    }
+    if (devState === 'error') {
+      await simulateDelay(300);
+      throw new Error('Simulated API error: failed to fetch repository bus factor metrics');
+    }
+    if (devState === 'empty') {
+      await simulateDelay(200);
+      return {
+        score: 0,
+        label: 'estimate (concentration of commits)',
+        top_contributor_share: 0,
+        modules: [],
+      };
+    }
+
+    await simulateDelay(400);
+    return mockMetricsBusFactorData as BusFactorResponse;
+  }
+
+  const url = `${API_BASE_URL}/repos/${encodeURIComponent(repoId)}/metrics/bus-factor`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch bus factor: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+}
+
+/**
+ * Get export URL for downloading repository snapshot
+ * GET /api/v1/repos/:id/export?format=json|csv
+ */
+export function getExportUrl({
+  repoId = 'default',
+  format = 'json',
+}: GetExportUrlParams): string {
+  return `${API_BASE_URL}/repos/${encodeURIComponent(repoId)}/export?format=${encodeURIComponent(format)}`;
+}
+
+/**
+ * Download metrics snapshot in JSON or CSV format.
+ * In mock mode: generates and downloads in-browser via Blob.
+ * In live mode: triggers download from the backend export URL.
+ */
+export function downloadExport({
+  repoId = 'default',
+  format = 'json',
+  churnData,
+  busFactorData,
+}: {
+  repoId?: string;
+  format: 'json' | 'csv';
+  churnData?: ChurnResponse;
+  busFactorData?: BusFactorResponse;
+}): void {
+  if (!USE_MOCK) {
+    const exportUrl = getExportUrl({ repoId, format });
+    window.open(exportUrl, '_blank');
+    return;
+  }
+
+  // Client-side mock export generator
+  const activeChurn = churnData || (mockMetricsChurnData as ChurnResponse);
+  const activeBus = busFactorData || (mockMetricsBusFactorData as BusFactorResponse);
+
+  let blob: Blob;
+  let filename: string;
+
+  if (format === 'json') {
+    const exportPayload = {
+      repository: repoId,
+      exported_at: new Date().toISOString(),
+      note: 'GitViz health metrics snapshot (honest estimate)',
+      churn: activeChurn,
+      bus_factor: activeBus,
+    };
+    blob = new Blob([JSON.stringify(exportPayload, null, 2)], {
+      type: 'application/json',
+    });
+    filename = `gitviz-metrics-${repoId}.json`;
+  } else {
+    // Generate CSV from top_files
+    const headers = ['path', 'churn_commits', 'churn_lines', 'last_touch_at'];
+    const rows = (activeChurn.top_files || []).map((f) => {
+      // Escape paths containing quotes or commas
+      const escapedPath = `"${f.path.replace(/"/g, '""')}"`;
+      return [escapedPath, f.churn_commits, f.churn_lines, `"${f.last_touch_at}"`].join(',');
+    });
+    const csvContent = [headers.join(','), ...rows].join('\n');
+    blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    filename = `gitviz-top-churn-${repoId}.csv`;
+  }
+
+  // Trigger browser download
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }

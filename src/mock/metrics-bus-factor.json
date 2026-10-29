@@ -1,0 +1,43 @@
+{
+  "score": 2,
+  "label": "estimate (concentration of commits)",
+  "top_contributor_share": 0.58,
+  "modules": [
+    {
+      "path": "src/core/",
+      "bus_factor": 1,
+      "top_author": "Elena Rostova",
+      "top_author_share": 0.88
+    },
+    {
+      "path": "src/api/",
+      "bus_factor": 1,
+      "top_author": "Devin Chen",
+      "top_author_share": 0.82
+    },
+    {
+      "path": "src/components/graph/",
+      "bus_factor": 2,
+      "top_author": "Sarah Miller",
+      "top_author_share": 0.54
+    },
+    {
+      "path": "src/components/ui/",
+      "bus_factor": 2,
+      "top_author": "Elena Rostova",
+      "top_author_share": 0.51
+    },
+    {
+      "path": "src/styles/",
+      "bus_factor": 3,
+      "top_author": "Marcus Vance",
+      "top_author_share": 0.36
+    },
+    {
+      "path": "src/components/home/",
+      "bus_factor": 3,
+      "top_author": "Aria Stark",
+      "top_author_share": 0.34
+    }
+  ]
+}

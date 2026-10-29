@@ -1,0 +1,72 @@
+.honesty-notes-card {
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+}
+
+.honesty-notes-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.honesty-notes-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.honesty-notes-title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+.honesty-notes-list {
+  margin: 0;
+  padding: 0 0 0 var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.honesty-note-item strong {
+  color: var(--color-text-primary);
+}
+
+.ignored-patterns-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ignored-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.ignored-pattern-chip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1px 6px;
+  color: var(--color-text-secondary);
+}
+
+.ignored-note {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-style: italic;
+}

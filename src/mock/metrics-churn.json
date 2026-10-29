@@ -1,0 +1,105 @@
+{
+  "repo": {
+    "name": "sample-repo",
+    "commit_count": 4821,
+    "author_count": 6,
+    "first_commit_at": "2025-11-04T10:14:00Z",
+    "last_commit_at": "2026-10-24T18:30:00Z"
+  },
+  "merge_commits_counted": false,
+  "ignored_patterns": [
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    "dist/",
+    "build/",
+    "node_modules/",
+    "*.min.*",
+    "go.sum",
+    "Cargo.lock"
+  ],
+  "top_files": [
+    {
+      "path": "src/core/router.ts",
+      "churn_commits": 42,
+      "churn_lines": 348,
+      "last_touch_at": "2026-10-24T18:30:00Z"
+    },
+    {
+      "path": "src/api/client.ts",
+      "churn_commits": 38,
+      "churn_lines": 294,
+      "last_touch_at": "2026-10-23T14:15:00Z"
+    },
+    {
+      "path": "src/components/graph/CommitList.tsx",
+      "churn_commits": 29,
+      "churn_lines": 260,
+      "last_touch_at": "2026-10-22T09:40:00Z"
+    },
+    {
+      "path": "src/styles/tokens.css",
+      "churn_commits": 21,
+      "churn_lines": 185,
+      "last_touch_at": "2026-10-21T16:20:00Z"
+    },
+    {
+      "path": "src/components/ui/Button.tsx",
+      "churn_commits": 19,
+      "churn_lines": 142,
+      "last_touch_at": "2026-10-20T11:05:00Z"
+    },
+    {
+      "path": "src/components/graph/layout/laneLayout.ts",
+      "churn_commits": 18,
+      "churn_lines": 210,
+      "last_touch_at": "2026-10-22T17:45:00Z"
+    },
+    {
+      "path": "package.json",
+      "churn_commits": 17,
+      "churn_lines": 86,
+      "last_touch_at": "2026-10-24T19:10:00Z"
+    },
+    {
+      "path": "src/App.tsx",
+      "churn_commits": 16,
+      "churn_lines": 112,
+      "last_touch_at": "2026-10-19T13:30:00Z"
+    },
+    {
+      "path": "src/components/Header.tsx",
+      "churn_commits": 15,
+      "churn_lines": 98,
+      "last_touch_at": "2026-10-18T10:15:00Z"
+    },
+    {
+      "path": "src/components/files/FilePicker.tsx",
+      "churn_commits": 14,
+      "churn_lines": 135,
+      "last_touch_at": "2026-10-24T15:00:00Z"
+    }
+  ],
+  "commits_per_author": [
+    { "name": "Elena Rostova", "commits": 1680, "lines_added": 14200 },
+    { "name": "Devin Chen", "commits": 1250, "lines_added": 10450 },
+    { "name": "Sarah Miller", "commits": 890, "lines_added": 7120 },
+    { "name": "Marcus Vance", "commits": 540, "lines_added": 4890 },
+    { "name": "Aria Stark", "commits": 310, "lines_added": 2940 },
+    { "name": "James Thorne", "commits": 151, "lines_added": 1320 }
+  ],
+  "churn_over_time": [
+    { "period": "2025-11", "commits": 240, "lines_changed": 3100 },
+    { "period": "2025-12", "commits": 320, "lines_changed": 4250 },
+    { "period": "2026-01", "commits": 420, "lines_changed": 5400 },
+    { "period": "2026-02", "commits": 390, "lines_changed": 4900 },
+    { "period": "2026-03", "commits": 510, "lines_changed": 6200 },
+    { "period": "2026-04", "commits": 470, "lines_changed": 5800 },
+    { "period": "2026-05", "commits": 530, "lines_changed": 6700 },
+    { "period": "2026-06", "commits": 420, "lines_changed": 4950 },
+    { "period": "2026-07", "commits": 460, "lines_changed": 5600 },
+    { "period": "2026-08", "commits": 410, "lines_changed": 4850 },
+    { "period": "2026-09", "commits": 440, "lines_changed": 5300 },
+    { "period": "2026-10", "commits": 211, "lines_changed": 3150 }
+  ]
+}
