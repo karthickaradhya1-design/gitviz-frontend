@@ -178,6 +178,29 @@
   flex-shrink: 0;
 }
 
+.hero-load-prompt {
+  margin: calc(var(--space-2) * -1) 0 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.hero-load-link {
+  color: var(--color-link);
+  font-weight: var(--font-semibold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.hero-load-link:hover {
+  color: var(--color-accent);
+}
+
+[data-theme="dark"] .hero-load-link {
+  color: var(--color-accent);
+}
+
 /* RESPONSIVE BREAKPOINTS */
 @media (max-width: 960px) {
   .hero-section {

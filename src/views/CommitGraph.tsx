@@ -3,6 +3,7 @@ import { Database, FilterX } from 'lucide-react';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useCommits } from '../api/hooks';
 import { USE_MOCK } from '../api/client';
+import { useRepo } from '../context/RepoContext';
 import { Commit } from '../api/types';
 import { GraphToolbar, GraphFilterState } from '../components/graph/GraphToolbar';
 import { CommitList } from '../components/graph/CommitList';
@@ -23,7 +24,8 @@ const INITIAL_FILTERS: GraphFilterState = {
 
 export const CommitGraph: React.FC = () => {
   usePageTitle('Commit Graph');
-  const { data, isLoading, error, refetch } = useCommits('default');
+  const { activeRepoId } = useRepo();
+  const { data, isLoading, error, refetch } = useCommits(activeRepoId || undefined);
   const [filters, setFilters] = useState<GraphFilterState>(INITIAL_FILTERS);
   const [selectedCommit, setSelectedCommit] = useState<Commit | null>(null);
   const [mobileDetailsOpen, setMobileDetailsOpen] = useState(false);
@@ -182,13 +184,17 @@ export const CommitGraph: React.FC = () => {
             }
             onRetry={() => refetch()}
           />
-        ) : rawCommits.length === 0 ? (
+        ) : (!activeRepoId || rawCommits.length === 0) ? (
           <EmptyState
-            title="No commits to show"
-            description="Load a repository to see its history. An empty repository has no commits yet."
+            title={!activeRepoId ? "No repository loaded" : "No commits to show"}
+            description={
+              !activeRepoId
+                ? "Load a repository to explore its branches, merges and commits."
+                : "Load a repository to see its history. An empty repository has no commits yet."
+            }
             action={
-              <Button to="/" variant="primary" size="md">
-                Back to Home
+              <Button to="/load" variant="primary" size="md">
+                Load a repository
               </Button>
             }
           />

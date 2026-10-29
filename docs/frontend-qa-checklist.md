@@ -103,6 +103,23 @@ Every check in this section must pass in **both Light and Dark themes**, with ke
 
 ---
 
+### 1.8 Load Repository Page (`/load`)
+
+| # | Test Scenario | Steps | Expected Result | Pass? |
+|---|---------------|-------|-----------------|-------|
+| 1 | **Empty Path Validation** | Clear input and click "Start import" | Inline error appears: *"Repository path is required."* Input receives `aria-invalid="true"` and keyboard focus. | [ ] |
+| 2 | **Whitespace-only Path** | Enter spaces `   ` and click "Start import" | Inline error appears: *"Repository path is required."* Backend request is not fired. | [ ] |
+| 3 | **Control Characters & Newlines** | Paste input with line breaks or control chars | Inline error appears: *"Path contains invalid control characters or line breaks."* | [ ] |
+| 4 | **Spaces & Unicode in Path** | Enter `C:\projects\my cool repo` or `~/dossiers/développement` | Path is accepted as valid client input and forwarded strictly as text to API. | [ ] |
+| 5 | **Validation Error Demo (`/does/not/exist`)** | Enter `/does/not/exist` in mock mode and submit | Backend error alert appears (`role="alert"`): *"Path not found or not a Git repository"* with a "Try again" action button. No stack trace. | [ ] |
+| 6 | **Mock Error Switch (`?state=error`)** | Navigate to `/load?state=error` and submit valid path | API creation failure is simulated; error alert appears with retry option. | [ ] |
+| 7 | **Mock Ingestion Error (`?state=import-error`)** | Navigate to `/load?state=import-error` and submit valid path | Progress increments to ~60%, then displays error card with message and safe note: *"Your repository was not changed."* | [ ] |
+| 8 | **Progress Bar Accessibility** | Inspect determinate progress bar during import | `role="progressbar"`, `aria-valuenow`, `aria-valuemin="0"`, `aria-valuemax="100"`. Screen reader announcements fire only at 25%, 50%, 75%, and 100% milestones via `aria-live="polite"`. | [ ] |
+| 9 | **Refresh While Ingesting** | Refresh browser while import status is "ingesting" | Page re-reads repo from `localStorage` and resumes polling cleanly without layout flash or console errors until done. | [ ] |
+| 10 | **Responsive & Themes (360px)** | Test in both light and dark themes at 360px viewport | Form and What Happens cards stack vertically; progress bar and milestone list fit without horizontal scrolling. | [ ] |
+
+---
+
 ## 2. Weird Data to Try Once Backend is Live
 
 When P1 (Backend) and P2 (Data Engine) connect to real repositories, execute the following stress-test scenarios:
@@ -166,3 +183,8 @@ In accordance with **P4 PRD Rule 7** (*"Honesty week: scan every claim — no 'f
 | `src/components/dashboard/BusFactorPanel.tsx:56` | *"Only one author found. Bus factor is 1 by definition."* | Verified: Avoids misleading alarm for single-author repos. |
 | `src/components/dashboard/HonestyNotes.tsx:33` | *"Hotspots: Churn correlates with bugs but does not predict them. A hotspot means inspect this, never 'this will break'."* | Verified: Clear guidance in the dashboard footer card. |
 | `src/components/dashboard/metricsUtils.ts:39` | `classifyBusFactor`: `score <= 1` (Concentrated), `score === 2` (Moderate), `score >= 3` (Spread) | Verified: Documented heuristic classification thresholds. |
+| `src/components/load/WhatHappensCard.tsx:49` | *"Import time depends on repository size and the machine. GitViz does not promise a specific speed."* | Verified: Disclaims unmeasured speed/time promises; sets honest expectations. |
+| `src/components/load/RepoPathForm.tsx:142` | *"This is the path on the machine where the GitViz backend runs. GitViz only reads the repository and never changes it."* | Verified: Explains path execution context and read-only guarantee. |
+| `src/components/load/ImportProgress.tsx:180` | *"Your repository was not changed."* | Verified: Displayed on import failure to reassure user that repo integrity is intact. |
+| `src/components/load/loadUtils.ts:18` | `MAX_RECENT_REPOS = 5` | Verified: Bounds recent repository list to 5 items to avoid storage bloat. |
+| `src/components/load/loadUtils.ts:74` | Milestone steps: `0` (Queued), `> 0` (Reading history), `80` (Saving results), `100` (Done) | Verified: Strictly deterministic step mapping based on percentage ranges without timing claims. |

@@ -1,0 +1,80 @@
+.load-repo-view {
+  min-height: calc(100vh - 64px);
+  padding: var(--space-8) 0 var(--space-16);
+  background-color: var(--color-bg);
+}
+
+.load-repo-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.load-repo-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.load-repo-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.load-repo-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.load-repo-subtitle {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  max-width: 680px;
+  line-height: var(--leading-relaxed);
+}
+
+/* Two-column responsive desktop layout */
+.load-repo-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.load-repo-main {
+  width: 100%;
+}
+
+.load-repo-aside {
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .load-repo-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+@media (max-width: 600px) {
+  .load-repo-container {
+    padding: 0 var(--space-4);
+    gap: var(--space-6);
+  }
+
+  .load-repo-title {
+    font-size: var(--text-2xl);
+  }
+}

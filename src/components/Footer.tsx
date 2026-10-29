@@ -56,6 +56,11 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/load" className="footer-link">
+                    Load Repository
+                  </Link>
+                </li>
+                <li>
                   <Link to="/graph" className="footer-link">
                     Commit Graph
                   </Link>

@@ -6,12 +6,12 @@ import {
   FileJson,
   FileSpreadsheet,
   GitCommit,
-  RotateCcw,
   ShieldAlert,
   Users,
 } from 'lucide-react';
 import { useChurn, useBusFactor } from '../api/hooks';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useRepo } from '../context/RepoContext';
 import { USE_MOCK, downloadExport } from '../api/client';
 import { formatActivePeriod } from '../components/dashboard/metricsUtils';
 import { StatCard } from '../components/dashboard/StatCard';
@@ -27,19 +27,20 @@ import './Dashboard.css';
 
 export const Dashboard: React.FC = () => {
   usePageTitle('Health Dashboard');
+  const { activeRepoId } = useRepo();
   const {
     data: churn,
     isLoading: isChurnLoading,
     error: churnError,
     refetch: refetchChurn,
-  } = useChurn('default');
+  } = useChurn(activeRepoId || undefined);
 
   const {
     data: busFactor,
     isLoading: isBusLoading,
     error: busError,
     refetch: refetchBus,
-  } = useBusFactor('default');
+  } = useBusFactor(activeRepoId || undefined);
 
   const [exportOpen, setExportOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -163,13 +164,13 @@ export const Dashboard: React.FC = () => {
             description="The API did not respond. Check that the backend is running, or switch USE_MOCK on in src/api/client.ts."
             onRetry={handleRetryAll}
           />
-        ) : !churn || churn.repo.commit_count === 0 ? (
+        ) : (!activeRepoId || !churn || churn.repo.commit_count === 0) ? (
           <EmptyState
             title="No metrics yet"
             description="Load a repository and let the import finish to see its health metrics."
             action={
-              <Button variant="primary" to="/" size="md" leadingIcon={<RotateCcw size={14} />}>
-                Go to Home
+              <Button variant="primary" to="/load" size="md">
+                Load a repository
               </Button>
             }
           />

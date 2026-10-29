@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { GitBranch, Menu, X, CircleDot } from 'lucide-react';
+import { GitBranch, Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { useRepo } from '../context/RepoContext';
+import { useRepoStatus } from '../api/hooks';
 import './Header.css';
 
 interface NavItem {
@@ -22,6 +24,29 @@ export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  const { repo } = useRepo();
+  const { data: liveStatus } = useRepoStatus(
+    repo?.repoId,
+    repo?.status === 'ingesting'
+  );
+
+  let chipText = 'No repo loaded';
+  let dotClass = 'dot-neutral';
+
+  if (repo) {
+    if (repo.status === 'ingesting') {
+      const pct = liveStatus?.pct ?? 0;
+      chipText = `Importing ${repo.name} ${pct}%`;
+      dotClass = 'dot-ingesting';
+    } else if (repo.status === 'done') {
+      chipText = repo.name;
+      dotClass = 'dot-success';
+    } else if (repo.status === 'error') {
+      chipText = 'Import failed';
+      dotClass = 'dot-error';
+    }
+  }
 
   // Update shadow when scrolled
   useEffect(() => {
@@ -87,10 +112,16 @@ export const Header: React.FC = () => {
 
         {/* Right: Repository Status Chip & Actions */}
         <div className="header-actions">
-          <div className="repo-status-chip" role="status" aria-live="polite">
-            <CircleDot size={12} className="repo-status-dot" aria-hidden="true" />
-            <span>No repo loaded</span>
-          </div>
+          <Link
+            to="/load"
+            className="repo-status-chip-link"
+            aria-label={`Repository status: ${chipText}. Open the load page.`}
+          >
+            <div className="repo-status-chip" role="status" aria-live="polite">
+              <span className={`repo-status-dot ${dotClass}`} aria-hidden="true" />
+              <span>{chipText}</span>
+            </div>
+          </Link>
 
           <ThemeToggle variant="icon" />
 
@@ -112,6 +143,17 @@ export const Header: React.FC = () => {
       {isMobileMenuOpen && (
         <div id="mobile-navigation" className="mobile-nav-panel" role="region" aria-label="Mobile Navigation">
           <ul className="mobile-nav-links">
+            <li>
+              <NavLink
+                to="/load"
+                className={({ isActive }) =>
+                  `mobile-nav-link ${isActive ? 'active' : ''}`
+                }
+                onClick={closeMobileMenu}
+              >
+                <span>Load repository</span>
+              </NavLink>
+            </li>
             {NAV_ITEMS.map((item) => (
               <li key={item.path}>
                 <NavLink
@@ -129,10 +171,17 @@ export const Header: React.FC = () => {
           </ul>
 
           <div className="mobile-panel-footer">
-            <div className="repo-status-chip" role="status" style={{ display: 'inline-flex' }}>
-              <CircleDot size={12} className="repo-status-dot" aria-hidden="true" />
-              <span>No repo loaded</span>
-            </div>
+            <Link
+              to="/load"
+              className="repo-status-chip-link"
+              aria-label={`Repository status: ${chipText}. Open the load page.`}
+              onClick={closeMobileMenu}
+            >
+              <div className="repo-status-chip" role="status" style={{ display: 'inline-flex' }}>
+                <span className={`repo-status-dot ${dotClass}`} aria-hidden="true" />
+                <span>{chipText}</span>
+              </div>
+            </Link>
             <ThemeToggle variant="button" />
           </div>
         </div>

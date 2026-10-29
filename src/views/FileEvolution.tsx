@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { FileSearch, Layers } from 'lucide-react';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useFiles, useFileHistory } from '../api/hooks';
+import { useRepo } from '../context/RepoContext';
+import { Button } from '../components/ui/Button';
 import { FilePicker } from '../components/files/FilePicker';
 import { FileTimeline } from '../components/files/FileTimeline';
 import { LoadingSkeleton, EmptyState, ErrorState } from '../components/states';
@@ -11,6 +13,7 @@ import './FileEvolution.css';
 
 export const FileEvolution: React.FC = () => {
   usePageTitle('File Evolution');
+  const { activeRepoId } = useRepo();
   const [searchParams, setSearchParams] = useSearchParams();
   const urlPath = searchParams.get('path');
   const [mobilePickerOpen, setMobilePickerOpen] = useState(false);
@@ -21,7 +24,7 @@ export const FileEvolution: React.FC = () => {
     isLoading: isFilesLoading,
     error: filesError,
     refetch: refetchFiles,
-  } = useFiles('default');
+  } = useFiles(activeRepoId || undefined);
 
   // Determine current active file path
   const currentPath = useMemo(() => {
@@ -54,7 +57,7 @@ export const FileEvolution: React.FC = () => {
     isLoading: isHistoryLoading,
     error: historyError,
     refetch: refetchHistory,
-  } = useFileHistory('default', currentPath);
+  } = useFileHistory(activeRepoId || undefined, currentPath);
 
   const handleSelectPath = (path: string) => {
     setSearchParams((prev) => {
@@ -97,62 +100,79 @@ export const FileEvolution: React.FC = () => {
           </div>
         </div>
 
-        {/* Two-column Layout: Sidebar FilePicker + Main FileTimeline */}
-        <div className="file-evolution-layout">
-          {/* Left Column: File Picker */}
-          <aside
-            className={`file-evolution-sidebar ${
-              mobilePickerOpen ? 'is-mobile-open' : ''
-            }`}
-          >
-            {isFilesLoading ? (
-              <div className="sidebar-loading">
-                <LoadingSkeleton rows={10} />
-              </div>
-            ) : filesError ? (
-              <ErrorState
-                title="Failed to load files"
-                description={filesError.message}
-                onRetry={refetchFiles}
-              />
-            ) : !files || files.length === 0 ? (
-              <EmptyState
-                icon={<Layers size={24} />}
-                title="No files found"
-                description="This repository does not have any tracked files in history."
-              />
-            ) : (
-              <FilePicker
-                files={files}
-                selectedPath={currentPath}
-                onSelectPath={handleSelectPath}
-              />
-            )}
-          </aside>
+        {/* Main Content: Empty State when no repo loaded, or two-column layout */}
+        {!activeRepoId ? (
+          <EmptyState
+            title="No repository loaded"
+            description="Load a repository to inspect its file evolution and diffs."
+            action={
+              <Button to="/load" variant="primary" size="md">
+                Load a repository
+              </Button>
+            }
+          />
+        ) : (
+          <div className="file-evolution-layout">
+            {/* Left Column: File Picker */}
+            <aside
+              className={`file-evolution-sidebar ${
+                mobilePickerOpen ? 'is-mobile-open' : ''
+              }`}
+            >
+              {isFilesLoading ? (
+                <div className="sidebar-loading">
+                  <LoadingSkeleton rows={10} />
+                </div>
+              ) : filesError ? (
+                <ErrorState
+                  title="Failed to load files"
+                  description={filesError.message}
+                  onRetry={refetchFiles}
+                />
+              ) : !files || files.length === 0 ? (
+                <EmptyState
+                  icon={<Layers size={24} />}
+                  title="No files found"
+                  description="This repository does not have any tracked files in history."
+                  action={
+                    <Button to="/load" variant="primary" size="md">
+                      Load a repository
+                    </Button>
+                  }
+                />
+              ) : (
+                <FilePicker
+                  files={files}
+                  selectedPath={currentPath}
+                  onSelectPath={handleSelectPath}
+                />
+              )}
+            </aside>
 
-          {/* Right Column: File Timeline & Diff View */}
-          <main className="file-evolution-main">
-            {isHistoryLoading ? (
-              <div className="main-loading">
-                <LoadingSkeleton rows={8} />
-              </div>
-            ) : historyError ? (
-              <ErrorState
-                title="Failed to load file history"
-                description={historyError.message}
-                onRetry={refetchHistory}
-              />
-            ) : !history ? (
-              <EmptyState
-                icon={<FileSearch size={24} />}
-                title="Select a file"
-                description="Pick a repository file from the sidebar to inspect its commit lineage and diffs."
-              />
-            ) : (
-              <FileTimeline history={history} />
-            )}
-          </main>
-        </div>
+            {/* Right Column: File Timeline & Diff View */}
+            <main className="file-evolution-main">
+              {isHistoryLoading ? (
+                <div className="main-loading">
+                  <LoadingSkeleton rows={8} />
+                </div>
+              ) : historyError ? (
+                <ErrorState
+                  title="Failed to load file history"
+                  description={historyError.message}
+                  onRetry={refetchHistory}
+                />
+              ) : !history ? (
+                <EmptyState
+                  icon={<FileSearch size={24} />}
+                  title="Select a file"
+                  description="Pick a repository file from the sidebar to inspect its commit lineage and diffs."
+                />
+              ) : (
+                <FileTimeline history={history} />
+              )}
+            </main>
+          </div>
+        )}
       </div>
     </div>
   );

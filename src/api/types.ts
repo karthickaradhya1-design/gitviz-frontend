@@ -148,3 +148,24 @@ export interface GetExportUrlParams {
   repoId?: string;
   format: 'json' | 'csv';
 }
+
+export interface CreateRepoRequest {
+  path: string;
+}
+
+export interface CreateRepoResponse {
+  repo_id: string;
+  status: 'ingesting';
+}
+
+export interface RepoStatus {
+  pct: number;
+  commit_count: number;
+  status?: 'ingesting' | 'done' | 'error';
+  error?: string;
+}
+
+export interface GetRepoStatusParams {
+  repoId: string;
+}
+

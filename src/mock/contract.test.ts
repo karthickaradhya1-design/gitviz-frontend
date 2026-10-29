@@ -6,6 +6,7 @@ import fileHistoryData from './file-history.json';
 import fileHistorySimpleData from './file-history-simple.json';
 import metricsChurnData from './metrics-churn.json';
 import metricsBusFactorData from './metrics-bus-factor.json';
+import { createRepo, getRepoStatus, resetMockImportState } from '../api/client';
 
 describe('API Contract Verification (Mock Fixtures)', () => {
   describe('commits.json contract', () => {
@@ -129,6 +130,26 @@ describe('API Contract Verification (Mock Fixtures)', () => {
       expect(typeof mod.bus_factor).toBe('number');
       expect(typeof mod.top_author).toBe('string');
       expect(typeof mod.top_author_share).toBe('number');
+    });
+  });
+
+  describe('repository ingestion endpoints contract', () => {
+    it('createRepo matches CreateRepoResponse structure and status', async () => {
+      resetMockImportState('sample-repo');
+      const response = await createRepo({ path: '~/projects/gitviz' });
+      expect(typeof response.repo_id).toBe('string');
+      expect(response.status).toBe('ingesting');
+    });
+
+    it('getRepoStatus matches RepoStatus structure with numeric pct and commit_count', async () => {
+      resetMockImportState('sample-repo');
+      await createRepo({ path: '~/projects/gitviz' });
+      const status = await getRepoStatus({ repoId: 'sample-repo' });
+      expect(typeof status.pct).toBe('number');
+      expect(status.pct).toBeGreaterThanOrEqual(0);
+      expect(status.pct).toBeLessThanOrEqual(100);
+      expect(typeof status.commit_count).toBe('number');
+      expect(['ingesting', 'done', 'error']).toContain(status.status);
     });
   });
 });

@@ -27,6 +27,10 @@ import {
   GetChurnParams,
   GetBusFactorParams,
   GetExportUrlParams,
+  CreateRepoRequest,
+  CreateRepoResponse,
+  RepoStatus,
+  GetRepoStatusParams,
 } from './types';
 import mockCommitsData from '../mock/commits.json';
 import mockCommitDetailData from '../mock/commit-detail.json';
@@ -427,3 +431,184 @@ export function downloadExport({
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+
+/**
+ * In-memory state for mock repository import simulation
+ */
+interface MockImportState {
+  pct: number;
+  commit_count: number;
+  status: 'ingesting' | 'done' | 'error';
+  error?: string;
+  callCount: number;
+}
+
+const mockImports = new Map<string, MockImportState>();
+
+/**
+ * Reset mock import simulation state (useful for tests and retry flows)
+ */
+export function resetMockImportState(repoId: string = 'sample-repo'): void {
+  mockImports.delete(repoId);
+}
+
+/**
+ * Create a new repository ingestion job
+ * POST /api/v1/repos
+ */
+export async function createRepo({
+  path,
+}: CreateRepoRequest): Promise<CreateRepoResponse> {
+  if (USE_MOCK) {
+    const params =
+      typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search)
+        : new URLSearchParams();
+    const devState = params.get('state');
+
+    if (devState === 'error') {
+      await simulateDelay(300);
+      throw new Error('Simulated API error: failed to initialize repository ingestion (test state)');
+    }
+
+    if (path.trim() === '/does/not/exist') {
+      await simulateDelay(300);
+      throw new Error('Path not found or not a Git repository');
+    }
+
+    await simulateDelay(400);
+
+    // Initialize fresh simulation state for sample-repo
+    mockImports.set('sample-repo', {
+      pct: 0,
+      commit_count: 0,
+      status: 'ingesting',
+      callCount: 0,
+    });
+
+    return {
+      repo_id: 'sample-repo',
+      status: 'ingesting',
+    };
+  }
+
+  // Real backend API endpoint
+  const response = await fetch(`${API_BASE_URL}/repos`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ path }),
+  });
+
+  if (!response.ok) {
+    let errorMessage = `Failed to create repository (${response.status} ${response.statusText})`;
+    try {
+      const errorJson = await response.json();
+      if (errorJson.message) {
+        errorMessage = errorJson.message;
+      }
+    } catch {
+      // Ignore JSON parse failure and use status text
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
+/**
+ * Get progress status of repository ingestion job
+ * GET /api/v1/repos/:id/status
+ */
+export async function getRepoStatus({
+  repoId,
+}: GetRepoStatusParams): Promise<RepoStatus> {
+  if (USE_MOCK) {
+    const params =
+      typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search)
+        : new URLSearchParams();
+    const devState = params.get('state');
+
+    await simulateDelay(150);
+
+    const totalCommits = mockMetricsChurnData.repo.commit_count || 1248;
+    let current = mockImports.get(repoId);
+
+    if (!current) {
+      current = {
+        pct: 0,
+        commit_count: 0,
+        status: 'ingesting',
+        callCount: 0,
+      };
+      mockImports.set(repoId, current);
+    }
+
+    // If already terminal (done or error), return existing state
+    if (current.status === 'done' || current.status === 'error') {
+      return {
+        pct: current.pct,
+        commit_count: current.commit_count,
+        status: current.status,
+        error: current.error,
+      };
+    }
+
+    current.callCount += 1;
+
+    // Check query string simulation switches
+    if (devState === 'import-error') {
+      // Advance to about 60% then fail
+      const nextPct = Math.min(60, current.pct + 25);
+      current.pct = nextPct;
+      current.commit_count = Math.round((nextPct / 100) * totalCommits);
+
+      if (current.pct >= 60) {
+        current.status = 'error';
+        current.error = 'Corrupted object or repository read error during git log ingestion';
+      } else {
+        current.status = 'ingesting';
+      }
+    } else if (devState === 'slow') {
+      // Slower incremental progress (+10% per call)
+      const nextPct = Math.min(100, current.pct + 10);
+      current.pct = nextPct;
+      current.commit_count = Math.round((nextPct / 100) * totalCommits);
+      current.status = current.pct >= 100 ? 'done' : 'ingesting';
+    } else {
+      // Normal mock progression (+25% per poll: 25% -> 50% -> 75% -> 100%)
+      const nextPct = Math.min(100, current.pct + 25);
+      current.pct = nextPct;
+      current.commit_count = Math.round((nextPct / 100) * totalCommits);
+      current.status = current.pct >= 100 ? 'done' : 'ingesting';
+    }
+
+    return {
+      pct: current.pct,
+      commit_count: current.commit_count,
+      status: current.status,
+      error: current.error,
+    };
+  }
+
+  // Real backend API endpoint
+  const response = await fetch(`${API_BASE_URL}/repos/${encodeURIComponent(repoId)}/status`);
+
+  if (!response.ok) {
+    let errorMessage = `Failed to get repository status (${response.status} ${response.statusText})`;
+    try {
+      const errorJson = await response.json();
+      if (errorJson.message) {
+        errorMessage = errorJson.message;
+      }
+    } catch {
+      // Ignore JSON parse failure
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+

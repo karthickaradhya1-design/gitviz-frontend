@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { GitBranch, ArrowRight, BarChart2, HardDrive, ShieldCheck, Cpu } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
@@ -72,6 +73,14 @@ export const Hero: React.FC = () => {
               <span>Numbers computed from Git, not guessed</span>
             </div>
           </div>
+
+          {/* Quick link to Load page */}
+          <p className="hero-load-prompt hero-anim-5">
+            Have a repository ready?{' '}
+            <Link to="/load" className="hero-load-link">
+              Load it
+            </Link>
+          </p>
         </div>
 
         {/* Right Column: Hero Visual Preview */}

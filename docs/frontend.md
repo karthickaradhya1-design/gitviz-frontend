@@ -52,13 +52,15 @@ gitviz-frontend/
 │   │   ├── files/              # Virtualized file picker, diff preview, timeline entries
 │   │   ├── graph/              # Virtualized commit list, SVG gutter, details drawer
 │   │   ├── home/               # Hero, features, how-it-works, CTA sections
+│   │   ├── load/               # RepoPathForm, ImportProgress, WhatHappensCard, loadUtils
 │   │   ├── states/             # LoadingSkeleton, EmptyState, and ErrorState fallbacks
 │   │   └── ui/                 # Atomic design system (Button, Badge, Card, SectionHeading)
 │   ├── content/                # Decoupled copy and static configuration (about.ts)
+│   ├── context/                # Global React contexts (RepoContext)
 │   ├── hooks/                  # Global hooks (usePageTitle)
 │   ├── mock/                   # Hand-written JSON fixtures matching REST API schema
 │   ├── styles/                 # Design tokens (tokens.css) and global rules (global.css)
-│   ├── views/                  # Primary page views (Home, Graph, Files, Dashboard, About, 404)
+│   ├── views/                  # Primary page views (Home, LoadRepo, Graph, Files, Dashboard, About, 404)
 │   ├── App.tsx                 # Root router, query client, theme provider, and code splitting
 │   └── main.tsx                # React DOM entry point
 ├── .env.example                # Template for environment configuration
@@ -114,10 +116,29 @@ In mock mode, append the `?state=` query parameter to test UI resilience:
 - `?state=loading`: Forces simulated network delay to verify loading skeletons.
 - `?state=empty`: Returns empty datasets to verify empty states.
 - `?state=error`: Throws simulated network exceptions to verify error handling and retry actions.
+- `?state=import-error`: On `/load`, simulates ingestion failure at ~60% progress.
+- `?state=slow`: On `/load`, slows down progress increments to +10% per poll.
 
 ---
 
-## 7. How to Add a New Endpoint or Mock Fixture
+## 7. Repository Context & Local Storage
+
+Repository state is centralized in [`src/context/RepoContext.tsx`](../src/context/RepoContext.tsx) via the `useRepo()` hook.
+
+- **Current Repository State**: Holds `{ repoId, name, path, status, commitCount }` or `null`.
+- **Mock Fallback**: `activeRepoId` automatically falls back to `'sample-repo'` **only** when `USE_MOCK` is true. When `USE_MOCK=false` and no repository has been imported, analytical pages (`/graph`, `/files`, `/dashboard`) display an `EmptyState` prompting the user to load a repository at `/load`.
+- **Status Resumption on Mount**: If a stored repository exists in `localStorage`, the context calls `getRepoStatus({ repoId })` once on mount to synchronize the latest ingestion status or commit totals.
+
+### LocalStorage Keys Used
+| Storage Key | Type / Contents | Purpose |
+|---|---|---|
+| `gitviz_current_repo` | JSON `{ repoId, name, path }` | Persists currently active repository across page refreshes. |
+| `gitviz_recent_repos` | Array of `{ path, name, lastLoadedAt }` | Stores up to 5 recently opened repositories for quick selection. |
+| `gitviz_theme_preference` | `'light' \| 'dark'` | Persists user theme preference independently of OS default. |
+
+---
+
+## 8. How to Add a New Endpoint or Mock Fixture
 
 1. **Declare Types**: Add TypeScript interface definitions in [`src/api/types.ts`](../src/api/types.ts).
 2. **Add Mock JSON**: Create a realistic JSON fixture in `src/mock/` adhering strictly to the schema.
@@ -127,7 +148,7 @@ In mock mode, append the `?state=` query parameter to test UI resilience:
 
 ---
 
-## 8. Known Limitations of the Frontend
+## 9. Known Limitations of the Frontend
 
 1. **DOM Node Ceiling**: While virtualized rendering (`@tanstack/react-virtual`) ensures that only visible rows are drawn in the commit list and file picker, browser engines experience memory pressure when rendering complex SVG DAGs with over 10,000 nodes simultaneously.
 2. **Heuristic Track Intersections**: Resolving crossing lines in arbitrary Git DAGs without track intersections is NP-hard. Greedy lane layout heuristics minimize track crossovers, but merge-dense repositories may exhibit track crossings.
