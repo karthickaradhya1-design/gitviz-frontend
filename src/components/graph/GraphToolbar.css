@@ -1,0 +1,208 @@
+/**
+ * GraphToolbar Styles
+ * Sticky filter bar with search input, dropdowns, toggle, counter, and reset.
+ */
+
+.graph-toolbar {
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-3) 0;
+  margin-bottom: var(--space-4);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+.graph-toolbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.graph-toolbar-filters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+/* Search Input */
+.graph-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 200px;
+  max-width: 280px;
+  flex: 1;
+}
+
+.graph-search-icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.graph-search-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 var(--space-3) 0 34px;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.graph-search-input:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+
+.graph-search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Select Dropdowns */
+.graph-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.graph-select {
+  height: 36px;
+  padding: 0 28px 0 var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.graph-select:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+
+.graph-select-chevron {
+  position: absolute;
+  right: 8px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+/* Merge Commits Toggle */
+.graph-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.graph-toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.graph-toggle-switch {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.graph-toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.graph-toggle-checkbox:checked + .graph-toggle-switch {
+  background-color: var(--color-accent);
+}
+
+.graph-toggle-checkbox:checked + .graph-toggle-switch::after {
+  transform: translateX(14px);
+}
+
+.graph-toggle-checkbox:focus-visible + .graph-toggle-switch {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Right Status & Reset */
+.graph-toolbar-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.graph-result-counter {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.graph-reset-btn {
+  font-size: var(--text-xs) !important;
+  height: 32px !important;
+  padding: 0 var(--space-3) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .graph-toolbar-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .graph-toolbar-filters {
+    width: 100%;
+  }
+
+  .graph-search-box {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .graph-toolbar-meta {
+    margin-left: 0;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "sha": "a9f7e21b84cd79e103f6d5012a84b0f9c2d18301",
+  "short_sha": "a9f7e21",
+  "parents": [
+    "7c32e01a4f09d8e7b165c3420f18a2d9b4c07123",
+    "e4b8912c9a10f76e3d54c82b01a7f3d9e2c45081"
+  ],
+  "author": {
+    "name": "Alex Rivera",
+    "email": "alex@gitviz.dev"
+  },
+  "committed_at": "2026-10-28T16:45:00Z",
+  "message": "Merge branch 'feature/timeline-renames' into main",
+  "is_merge": true,
+  "files_changed": 5,
+  "additions": 142,
+  "deletions": 28,
+  "branch_hint": "main",
+  "files": [
+    {
+      "path": "src/views/FileEvolution.tsx",
+      "old_path": "src/views/FileTimeline.tsx",
+      "additions": 68,
+      "deletions": 12,
+      "is_binary": false
+    },
+    {
+      "path": "src/components/timeline/TimelineView.tsx",
+      "old_path": null,
+      "additions": 44,
+      "deletions": 8,
+      "is_binary": false
+    },
+    {
+      "path": "src/api/client.ts",
+      "old_path": null,
+      "additions": 18,
+      "deletions": 4,
+      "is_binary": false
+    },
+    {
+      "path": "docs/schema.md",
+      "old_path": null,
+      "additions": 12,
+      "deletions": 4,
+      "is_binary": false
+    },
+    {
+      "path": "public/assets/logo.png",
+      "old_path": null,
+      "additions": 0,
+      "deletions": 0,
+      "is_binary": true
+    }
+  ]
+}

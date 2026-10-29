@@ -1,0 +1,172 @@
+/**
+ * CommitRow Styles
+ * 56px row with graph gutter, short SHA chip, message, branch, author avatar, and date.
+ */
+
+.commit-row {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  outline: none;
+  position: relative;
+}
+
+.commit-row:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.commit-row:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+  z-index: 2;
+}
+
+.commit-row.is-selected {
+  background-color: var(--color-primary-soft);
+  border-left: 3px solid var(--color-accent) !important;
+}
+
+/* Graph Gutter Reserved Area (120px) */
+.commit-gutter {
+  width: 120px;
+  min-width: 120px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  border-right: 1px dashed var(--color-border-subtle);
+}
+
+/* Row Content Columns */
+.commit-row-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--space-3);
+}
+
+/* Short SHA Chip */
+.commit-sha-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-link);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: copy;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.commit-sha-chip:hover {
+  border-color: var(--color-accent);
+  background-color: var(--color-surface-hover);
+}
+
+.commit-sha-chip.copied {
+  color: var(--color-success);
+  border-color: var(--color-success);
+  background-color: var(--color-success-bg);
+}
+
+/* Commit Message */
+.commit-message-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.commit-message {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: var(--font-normal);
+}
+
+.commit-row.is-selected .commit-message {
+  font-weight: var(--font-semibold);
+}
+
+/* Branch & Merge Badges */
+.commit-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* Author Avatar & Name */
+.commit-author-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.commit-author-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: var(--font-bold);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.commit-author-name {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Date */
+.commit-date {
+  width: 90px;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: right;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* RESPONSIVE: On mobile (< 680px), hide author and branch badges */
+@media (max-width: 680px) {
+  .commit-gutter {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  .commit-author-group,
+  .commit-badges {
+    display: none;
+  }
+}

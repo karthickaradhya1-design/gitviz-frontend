@@ -1,0 +1,105 @@
+/**
+ * CommitList Styles
+ * Virtualized scroll container with fixed height, custom scrollbar, and load-more trigger.
+ */
+
+.commit-list-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+/* List Column Headers */
+.commit-list-header {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.commit-list-header-gutter {
+  width: 120px;
+  min-width: 120px;
+  text-align: center;
+  padding: 0 var(--space-2);
+}
+
+.commit-list-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  padding: 0 var(--space-3);
+}
+
+.commit-list-header-sha {
+  width: 65px;
+}
+
+.commit-list-header-msg {
+  flex: 1;
+}
+
+.commit-list-header-author {
+  width: 140px;
+}
+
+.commit-list-header-date {
+  width: 90px;
+  text-align: right;
+}
+
+/* Virtualizer Viewport Scroll Area */
+.commit-list-viewport {
+  height: clamp(480px, 68vh, 760px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  contain: strict;
+}
+
+.commit-virtual-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.commit-virtual-row-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Load More Footer */
+.commit-list-load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background-color: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Responsive adjustment for headers */
+@media (max-width: 680px) {
+  .commit-list-header-gutter {
+    width: 60px;
+    min-width: 60px;
+  }
+  .commit-list-header-author {
+    display: none;
+  }
+}
