@@ -18,9 +18,16 @@ import {
   CommitListResponse,
   GetCommitParams,
   GetCommitsParams,
+  FileSummary,
+  FileHistoryResponse,
+  GetFilesParams,
+  GetFileHistoryParams,
 } from './types';
 import mockCommitsData from '../mock/commits.json';
 import mockCommitDetailData from '../mock/commit-detail.json';
+import mockFilesData from '../mock/files.json';
+import mockFileHistoryData from '../mock/file-history.json';
+import mockFileHistorySimpleData from '../mock/file-history-simple.json';
 
 export const USE_MOCK: boolean = true;
 export const API_BASE_URL: string = '/api/v1';
@@ -157,6 +164,97 @@ export async function getCommit({
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch commit ${sha}: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+}
+
+/**
+ * Fetch list of tracked files with commit counts and last touch dates
+ * GET /api/v1/repos/:id/files
+ */
+export async function getFiles({
+  repoId = 'default',
+}: GetFilesParams = {}): Promise<FileSummary[]> {
+  if (USE_MOCK) {
+    const devState = getDevSimulatedState();
+    if (devState === 'loading') {
+      await simulateDelay(60000);
+    }
+    if (devState === 'error') {
+      await simulateDelay(300);
+      throw new Error('Simulated API error: failed to fetch repository files list');
+    }
+    if (devState === 'empty') {
+      await simulateDelay(200);
+      return [];
+    }
+
+    await simulateDelay(300);
+    return mockFilesData as FileSummary[];
+  }
+
+  const url = `${API_BASE_URL}/repos/${encodeURIComponent(repoId)}/files`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch files: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+}
+
+/**
+ * Fetch complete commit history and diffs for a specific file
+ * GET /api/v1/repos/:id/files/:path/history
+ */
+export async function getFileHistory({
+  repoId = 'default',
+  path,
+}: GetFileHistoryParams): Promise<FileHistoryResponse> {
+  if (USE_MOCK) {
+    const devState = getDevSimulatedState();
+    if (devState === 'loading') {
+      await simulateDelay(60000);
+    }
+    if (devState === 'error') {
+      await simulateDelay(300);
+      throw new Error(`Simulated API error: failed to fetch history for ${path}`);
+    }
+    if (devState === 'empty') {
+      await simulateDelay(200);
+      return { path, history_complete: true, entries: [] };
+    }
+
+    await simulateDelay(350);
+
+    // If requesting package.json, return the clean simple history
+    if (path === 'package.json') {
+      return mockFileHistorySimpleData as FileHistoryResponse;
+    }
+
+    // If requesting router.ts or src/core/router.ts, return the rich mock with rename & break
+    if (path === 'src/core/router.ts' || path === 'src/router.ts') {
+      return mockFileHistoryData as FileHistoryResponse;
+    }
+
+    // For any other file from files.json, adapt mock entries to provide realistic interactive history
+    const matchedFile = (mockFilesData as FileSummary[]).find((f) => f.path === path);
+    const count = matchedFile ? Math.min(matchedFile.commit_count, mockFileHistoryData.entries.length) : 6;
+
+    return {
+      path,
+      history_complete: true,
+      entries: mockFileHistoryData.entries.slice(0, count).map((entry, idx) => ({
+        ...entry,
+        old_path: null,
+        break_after: null,
+        message: idx === 0 ? `refactor: update implementation of ${path.split('/').pop()}` : entry.message,
+      })),
+    };
+  }
+
+  const url = `${API_BASE_URL}/repos/${encodeURIComponent(repoId)}/files/${encodeURIComponent(path)}/history`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch history for file ${path}: ${response.status} ${response.statusText}`);
   }
   return response.json();
 }

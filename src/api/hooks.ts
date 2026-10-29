@@ -4,11 +4,19 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { getCommit, getCommits } from './client';
-import { CommitDetail, CommitListResponse, GetCommitsParams } from './types';
+import { getCommit, getCommits, getFileHistory, getFiles } from './client';
+import {
+  CommitDetail,
+  CommitListResponse,
+  GetCommitsParams,
+  FileSummary,
+  FileHistoryResponse,
+} from './types';
 
 export const COMMITS_QUERY_KEY = 'commits';
 export const COMMIT_DETAIL_QUERY_KEY = 'commit-detail';
+export const FILES_QUERY_KEY = 'files';
+export const FILE_HISTORY_QUERY_KEY = 'file-history';
 
 /**
  * Fetch list of commits for a repository
@@ -40,6 +48,37 @@ export function useCommit(
       return getCommit({ repoId, sha });
     },
     enabled: Boolean(sha),
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * Fetch list of all tracked repository files
+ */
+export function useFiles(repoId: string = 'default') {
+  return useQuery<FileSummary[], Error>({
+    queryKey: [FILES_QUERY_KEY, repoId],
+    queryFn: () => getFiles({ repoId }),
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * Fetch history and diff timeline for a single file
+ */
+export function useFileHistory(
+  repoId: string = 'default',
+  path: string | null | undefined
+) {
+  return useQuery<FileHistoryResponse, Error>({
+    queryKey: [FILE_HISTORY_QUERY_KEY, repoId, path],
+    queryFn: () => {
+      if (!path) {
+        throw new Error('File path is required');
+      }
+      return getFileHistory({ repoId, path });
+    },
+    enabled: Boolean(path),
     staleTime: 5 * 60 * 1000,
   });
 }

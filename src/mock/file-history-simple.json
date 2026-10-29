@@ -1,0 +1,62 @@
+{
+  "path": "package.json",
+  "history_complete": true,
+  "entries": [
+    {
+      "sha": "e1f2a3b4c5d67890123456789abcdef012345678",
+      "short_sha": "e1f2a3b",
+      "parents": ["f2a3b4c5d67890123456789abcdef01234567890"],
+      "author": { "name": "Elena Rostova", "email": "elena@gitviz.dev" },
+      "committed_at": "2026-10-24T19:10:00Z",
+      "message": "build: update dependency @tanstack/react-virtual to 3.13.0",
+      "is_merge": false,
+      "additions": 1,
+      "deletions": 1,
+      "old_path": null,
+      "break_after": null,
+      "diff": "@@ -28,3 +28,3 @@\n     \"@tanstack/react-query\": \"^5.28.4\",\n-    \"@tanstack/react-virtual\": \"^3.0.0\",\n+    \"@tanstack/react-virtual\": \"^3.13.0\",\n     \"lucide-react\": \"^0.359.0\","
+    },
+    {
+      "sha": "f2a3b4c5d67890123456789abcdef01234567890",
+      "short_sha": "f2a3b4c",
+      "parents": ["a3b4c5d67890123456789abcdef0123456789012"],
+      "author": { "name": "Devin Chen", "email": "devin@gitviz.dev" },
+      "committed_at": "2026-10-20T10:15:00Z",
+      "message": "build: add vitest for automated unit testing in CI",
+      "is_merge": false,
+      "additions": 2,
+      "deletions": 0,
+      "old_path": null,
+      "break_after": null,
+      "diff": "@@ -38,2 +38,4 @@\n   \"devDependencies\": {\n+    \"vitest\": \"^2.1.0\",\n     \"typescript\": \"^5.2.2\","
+    },
+    {
+      "sha": "a3b4c5d67890123456789abcdef0123456789012",
+      "short_sha": "a3b4c5d",
+      "parents": ["b4c5d67890123456789abcdef012345678901234"],
+      "author": { "name": "Sarah Miller", "email": "sarah@gitviz.dev" },
+      "committed_at": "2026-10-16T14:00:00Z",
+      "message": "build: add recharts and lucide-react dependencies",
+      "is_merge": false,
+      "additions": 2,
+      "deletions": 0,
+      "old_path": null,
+      "break_after": null,
+      "diff": "@@ -26,2 +26,4 @@\n   \"dependencies\": {\n+    \"lucide-react\": \"^0.359.0\",\n+    \"recharts\": \"^2.12.3\","
+    },
+    {
+      "sha": "b4c5d67890123456789abcdef012345678901234",
+      "short_sha": "b4c5d67",
+      "parents": [],
+      "author": { "name": "Marcus Vance", "email": "marcus@gitviz.dev" },
+      "committed_at": "2026-10-14T08:00:00Z",
+      "message": "chore: scaffold gitviz-frontend with vite and react",
+      "is_merge": false,
+      "additions": 35,
+      "deletions": 0,
+      "old_path": null,
+      "break_after": null,
+      "diff": "@@ -0,0 +1,35 @@\n+{\n+  \"name\": \"gitviz-frontend\",\n+  \"private\": true,\n+  \"version\": \"0.1.0\",\n+  \"type\": \"module\",\n+  \"scripts\": {\n+    \"dev\": \"vite\",\n+    \"build\": \"tsc && vite build\"\n+  }\n+}"
+    }
+  ]
+}

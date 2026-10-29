@@ -1,0 +1,208 @@
+.file-timeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+/* File Summary Bar */
+.file-summary-bar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.file-summary-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.file-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.file-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.file-path {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-path-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 3px var(--space-2);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.copy-path-btn:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+.copy-path-btn:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 1px;
+}
+
+.merge-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+}
+
+.merge-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  color: var(--color-text-primary);
+  font-weight: var(--font-medium);
+}
+
+.merge-checkbox {
+  cursor: pointer;
+  accent-color: var(--color-link);
+}
+
+.merge-icon {
+  color: var(--lane-2);
+}
+
+.merge-note {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+/* Stats Grid */
+.file-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+}
+
+.file-stat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.file-stat-icon {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.file-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-stat-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: var(--leading-none);
+  margin-bottom: 3px;
+}
+
+.file-stat-value {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+}
+
+.file-stat-churn {
+  display: inline-flex;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.churn-add {
+  color: var(--color-success);
+}
+
+.churn-del {
+  color: var(--color-danger);
+}
+
+/* History Incomplete Banner */
+.history-incomplete-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background-color: var(--color-info-bg);
+  border: 1px solid rgba(0, 174, 239, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
+.incomplete-banner-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.incomplete-banner-text strong {
+  color: var(--color-link);
+}
+
+/* Timeline List */
+.file-timeline-list {
+  margin: 0;
+  padding: var(--space-2) 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .file-summary-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .merge-toggle-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

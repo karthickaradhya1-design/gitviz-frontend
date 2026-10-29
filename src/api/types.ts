@@ -49,3 +49,39 @@ export interface GetCommitParams {
   repoId?: string;
   sha: string;
 }
+
+export interface FileSummary {
+  path: string;
+  commit_count: number;
+  last_touch_at: string;
+}
+
+export interface FileHistoryEntry {
+  sha: string;
+  short_sha: string;
+  parents: string[];
+  author: Author;
+  committed_at: string;
+  message: string;
+  is_merge: boolean;
+  additions: number;
+  deletions: number;
+  old_path?: string | null;
+  break_after?: string | null;
+  diff?: string;
+}
+
+export interface FileHistoryResponse {
+  path: string;
+  history_complete: boolean;
+  entries: FileHistoryEntry[];
+}
+
+export interface GetFilesParams {
+  repoId?: string;
+}
+
+export interface GetFileHistoryParams {
+  repoId?: string;
+  path: string;
+}
